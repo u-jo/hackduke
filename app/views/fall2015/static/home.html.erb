@@ -6,7 +6,7 @@
 
   <div id="finalregister">
     <div id="signup-container" class="row">
-      <h3 class="text-center">Hurry Up! Non-Duke Students Registration ends on Oct 12!</h3>
+      <h3 class="text-center">Hurry Up! Non-Duke Students Registration ends on Oct 14!</h3>
       <a class="cta-3" href="http://reg.hackduke.org/">Register</a>
     </div>
   </div>
@@ -50,7 +50,7 @@
   </div>
 </div>
 <% end %>
-<% if @large_sponsors == nil || @medium_sponsors == nil || @small_sponsors == nil %>
+<% if @large_sponsors != nil || @medium_sponsors != nil || @small_sponsors != nil %>
 <div class="frame-light" id="sponsors">
   <div class="container content text-center">
     <h1>Sponsors</h1>
