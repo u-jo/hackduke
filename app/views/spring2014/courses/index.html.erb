@@ -1,11 +1,13 @@
 <div class="frame-light">
   <div class="container content">
     <h1>Crash Courses</h1>
-    <% @courses.each do |c| %>
-    <% if c.semester.season == "Spring" && c.semester.year.year == 2014 %>
     <div class="row text-center">
+      <% @courses.each do |c| %>
+      <% if c.semester.season == "Spring" && c.semester.year.year == 2014 %>
       <div class="col-sm-6">
-        <h2 class="banner-header"><%= c.title %></h2>
+        <div class="text-center">
+          <h2 class="banner-header"><%= c.title %></h2>
+        </div>
         <h3>Instructors</h3>
         <div class="row">
           <% if c.instructors.count == 2 %>
@@ -25,12 +27,10 @@
           <% end %>
           <% end %>
         </div>
-        <h3><%= c.date.strftime("%A, %B %d") %></h3>
-        <h3><%= c.start_time.strftime("%l:%M %p") %> to <%= c.end_time.strftime("%l:%M %p") %></h3>
-        <h3><%= c.location %></h3>
+        <p><strong><%= c.date.strftime("%A, %B %d") %> | <%= c.start_time.strftime("%l:%M %p") %> to <%= c.end_time.strftime("%l:%M %p") %> | <%= c.location %></strong></p>
       </div>
+      <% end %>
+      <% end %>
     </div>
-    <% end %>
-    <% end %>
   </div>
 </div>

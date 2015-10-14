@@ -1,0 +1,92 @@
+<a id="mlh-trust-badge" href="https://mlh.io/?utm_campaign=Trust%20Badge" target="_blank"><img src="https://s3.amazonaws.com/logged-assets/trust-badge/f2015.png" alt="MLH Official - Fall 2015" style="width:100%;" ></a>
+<div class="frame-light" id="home">
+  <div id="home-badge">
+    <%= image_tag "fall2015/badge.svg" %>
+  </div>
+
+  <div id="finalregister">
+    <div id="signup-container" class="row">
+      <h3 class="text-center">Hurry Up! Non-Duke Students Registration ends on Oct 14!</h3>
+      <a class="cta-3" href="http://reg.hackduke.org/">Register</a>
+    </div>
+  </div>
+</div>
+
+<div class="frame-dark" id="about">
+  <div class="container content">
+    <h1>HackDuke is about</h1>
+    <%= render "about" %>
+  </div>
+</div>
+<div class="frame-light" id="faq">
+  <div class="container content">
+    <h1>FAQ</h1>
+    <div class="row">
+      <% @faqs.in_groups(3, false) do |fg| %>
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <% fg.each do |f| %>
+        <%= render f %>
+        <% end %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% if @mentors == nil %>
+<div class="frame-dark" id="mentors">
+  <div class="container content text-center">
+    <h1>Mentors</h1>
+    <div class="row">
+      <% @mentors.each do |m| %>
+      <%= render m %>
+      <% end %>
+    </div>
+    <div class="cta-wrapper">
+      <h1>This sounds awesome! I want to</h1>
+      <div class="btn-wrapper clearfix">
+        <a class="btn cta-2 pull-left" href="/mentor-guidelines">Learn about mentorship</a><p class="or">OR</p><a class="btn cta-2 pull-right" href="/mentor-info">Become a mentor</a>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<% if @large_sponsors != nil || @medium_sponsors != nil || @small_sponsors != nil %>
+<div class="frame-light" id="sponsors">
+  <div class="container content text-center">
+    <h1>Sponsors</h1>
+    <div class="row">
+      <% @large_sponsors.each do |s| %>
+      <%= render s %>
+      <% end %>
+    </div>
+    <div class="row">
+      <% @medium_sponsors.each do |s| %>
+      <%= render s %>
+      <% end %>
+    </div>
+    <div class="row">
+      <% @small_sponsors.each do |s| %>
+      <%= render s %>
+      <% end %>
+    </div>
+    <div class="cta-wrapper">
+      <h1>This sounds awesome! I want to</h1>
+      <div class="btn-wrapper clearfix">
+        <a class="btn cta-2 pull-left" href="">Learn about sponsorship</a><p class="or">OR</p><a class="btn cta-2 pull-right" href="mailto:sponsorship@hackduke.org">Become a sponsor</a>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<div class="frame-dark" id="partners">
+  <div class="container content text-center">
+    <h1>Partners</h1>
+    <div class="row">
+      <% Partner.all.each do |p| %>
+      <% if p.partnership_type == "University Partner" %>
+      <%= render p %>
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

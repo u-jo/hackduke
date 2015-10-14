@@ -24,14 +24,16 @@ ActiveAdmin.register Medium do
     column :semester
     column :link_url
     column :media_type
-    default_actions
+    actions
   end
 
   show do
     attributes_table do
-      row :name
+      row :title
       row :image_url
       row :semester
+      row :link_url
+      row :media_type
     end
   end
 end

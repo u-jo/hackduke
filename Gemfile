@@ -36,12 +36,13 @@ gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'bluecloth'
 gem 'activeadmin_pagedown'
 
+gem 'devise'
+
 # URL Validation
 gem "validate_url"
 
 # Better Errors
 group :development do
-	gem 'sqlite3'
 	gem "better_errors"
 	gem "binding_of_caller"
 end

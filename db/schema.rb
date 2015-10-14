@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140805085640) do
+ActiveRecord::Schema.define(version: 20141107231144) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -24,9 +27,9 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.datetime "updated_at"
   end
 
-  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
-  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace"
-  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
+  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
+  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
   create_table "admin_users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -43,8 +46,8 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.datetime "updated_at"
   end
 
-  add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
-  add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
+  add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "courses", force: true do |t|
     t.string   "title"
@@ -63,8 +66,8 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.integer "instructor_id"
   end
 
-  add_index "courses_instructors", ["course_id"], name: "index_courses_instructors_on_course_id"
-  add_index "courses_instructors", ["instructor_id"], name: "index_courses_instructors_on_instructor_id"
+  add_index "courses_instructors", ["course_id"], name: "index_courses_instructors_on_course_id", using: :btree
+  add_index "courses_instructors", ["instructor_id"], name: "index_courses_instructors_on_instructor_id", using: :btree
 
   create_table "events", force: true do |t|
     t.string   "name"
@@ -76,10 +79,22 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "partner_id"
+    t.integer  "sponsor_id"
+    t.text     "html_content"
+    t.text     "markdown_content"
   end
 
-  add_index "events", ["partner_id"], name: "index_events_on_partner_id"
-  add_index "events", ["semester_id"], name: "index_events_on_semester_id"
+  add_index "events", ["partner_id"], name: "index_events_on_partner_id", using: :btree
+  add_index "events", ["semester_id"], name: "index_events_on_semester_id", using: :btree
+  add_index "events", ["sponsor_id"], name: "index_events_on_sponsor_id", using: :btree
+
+  create_table "events_mentors", force: true do |t|
+    t.integer "event_id"
+    t.integer "mentor_id"
+  end
+
+  add_index "events_mentors", ["event_id"], name: "index_events_mentors_on_event_id", using: :btree
+  add_index "events_mentors", ["mentor_id"], name: "index_events_mentors_on_mentor_id", using: :btree
 
   create_table "faqs", force: true do |t|
     t.string   "question"
@@ -94,8 +109,8 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.integer "faq_id"
   end
 
-  add_index "faqs_semesters", ["faq_id"], name: "index_faqs_semesters_on_faq_id"
-  add_index "faqs_semesters", ["semester_id"], name: "index_faqs_semesters_on_semester_id"
+  add_index "faqs_semesters", ["faq_id"], name: "index_faqs_semesters_on_faq_id", using: :btree
+  add_index "faqs_semesters", ["semester_id"], name: "index_faqs_semesters_on_semester_id", using: :btree
 
   create_table "instructors", force: true do |t|
     t.string   "name"
@@ -113,7 +128,7 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.datetime "updated_at"
   end
 
-  add_index "maps", ["semester_id"], name: "index_maps_on_semester_id"
+  add_index "maps", ["semester_id"], name: "index_maps_on_semester_id", using: :btree
 
   create_table "media", force: true do |t|
     t.string  "title"
@@ -123,7 +138,7 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.integer "semester_id"
   end
 
-  add_index "media", ["semester_id"], name: "index_media_on_semester_id"
+  add_index "media", ["semester_id"], name: "index_media_on_semester_id", using: :btree
 
   create_table "mentors", force: true do |t|
     t.string   "name"
@@ -134,18 +149,22 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "html_content"
+    t.boolean  "education"
+    t.boolean  "poverty"
+    t.boolean  "health"
+    t.boolean  "energy"
   end
 
-  add_index "mentors", ["partner_id"], name: "index_mentors_on_partner_id"
-  add_index "mentors", ["sponsor_id"], name: "index_mentors_on_sponsor_id"
+  add_index "mentors", ["partner_id"], name: "index_mentors_on_partner_id", using: :btree
+  add_index "mentors", ["sponsor_id"], name: "index_mentors_on_sponsor_id", using: :btree
 
   create_table "mentors_semesters", force: true do |t|
     t.integer "mentor_id"
     t.integer "semester_id"
   end
 
-  add_index "mentors_semesters", ["mentor_id"], name: "index_mentors_semesters_on_mentor_id"
-  add_index "mentors_semesters", ["semester_id"], name: "index_mentors_semesters_on_semester_id"
+  add_index "mentors_semesters", ["mentor_id"], name: "index_mentors_semesters_on_mentor_id", using: :btree
+  add_index "mentors_semesters", ["semester_id"], name: "index_mentors_semesters_on_semester_id", using: :btree
 
   create_table "organizers", force: true do |t|
     t.string   "name"
@@ -160,8 +179,8 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.integer "semester_id"
   end
 
-  add_index "organizers_semesters", ["organizer_id"], name: "index_organizers_semesters_on_organizer_id"
-  add_index "organizers_semesters", ["semester_id"], name: "index_organizers_semesters_on_semester_id"
+  add_index "organizers_semesters", ["organizer_id"], name: "index_organizers_semesters_on_organizer_id", using: :btree
+  add_index "organizers_semesters", ["semester_id"], name: "index_organizers_semesters_on_semester_id", using: :btree
 
   create_table "partners", force: true do |t|
     t.string   "name"
@@ -182,16 +201,16 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.integer "prize_id"
   end
 
-  add_index "partners_prizes", ["partner_id"], name: "index_partners_prizes_on_partner_id"
-  add_index "partners_prizes", ["prize_id"], name: "index_partners_prizes_on_prize_id"
+  add_index "partners_prizes", ["partner_id"], name: "index_partners_prizes_on_partner_id", using: :btree
+  add_index "partners_prizes", ["prize_id"], name: "index_partners_prizes_on_prize_id", using: :btree
 
   create_table "partners_semesters", force: true do |t|
     t.integer "semester_id"
     t.integer "partner_id"
   end
 
-  add_index "partners_semesters", ["partner_id"], name: "index_partners_semesters_on_partner_id"
-  add_index "partners_semesters", ["semester_id"], name: "index_partners_semesters_on_semester_id"
+  add_index "partners_semesters", ["partner_id"], name: "index_partners_semesters_on_partner_id", using: :btree
+  add_index "partners_semesters", ["semester_id"], name: "index_partners_semesters_on_semester_id", using: :btree
 
   create_table "prizes", force: true do |t|
     t.string   "title"
@@ -201,10 +220,11 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "html_content"
+    t.boolean  "api",              default: false
   end
 
-  add_index "prizes", ["semester_id"], name: "index_prizes_on_semester_id"
-  add_index "prizes", ["sponsor_id"], name: "index_prizes_on_sponsor_id"
+  add_index "prizes", ["semester_id"], name: "index_prizes_on_semester_id", using: :btree
+  add_index "prizes", ["sponsor_id"], name: "index_prizes_on_sponsor_id", using: :btree
 
   create_table "semesters", force: true do |t|
     t.string   "season"
@@ -218,8 +238,8 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.integer "sponsor_id"
   end
 
-  add_index "semesters_sponsors", ["semester_id"], name: "index_semesters_sponsors_on_semester_id"
-  add_index "semesters_sponsors", ["sponsor_id"], name: "index_semesters_sponsors_on_sponsor_id"
+  add_index "semesters_sponsors", ["semester_id"], name: "index_semesters_sponsors_on_semester_id", using: :btree
+  add_index "semesters_sponsors", ["sponsor_id"], name: "index_semesters_sponsors_on_sponsor_id", using: :btree
 
   create_table "sponsors", force: true do |t|
     t.string   "name"
@@ -227,6 +247,7 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.string   "link_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "tier"
   end
 
   create_table "winners", force: true do |t|
@@ -238,6 +259,6 @@ ActiveRecord::Schema.define(version: 20140805085640) do
     t.string  "prize_description"
   end
 
-  add_index "winners", ["semester_id"], name: "index_winners_on_semester_id"
+  add_index "winners", ["semester_id"], name: "index_winners_on_semester_id", using: :btree
 
 end
